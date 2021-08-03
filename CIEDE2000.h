@@ -55,7 +55,7 @@
  * a component of the first color in LAB colorspace.
  * @param b1
  * b component of the first color in LAB colorspace.
- * @param la
+ * @param l2
  * L component of the second color in LAB colorspace.
  * @param a2
  * a component of the second color in LAB colorspace.
