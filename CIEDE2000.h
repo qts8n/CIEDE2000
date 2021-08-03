@@ -1,117 +1,98 @@
 /*
  * CIEDE2000.h
- * Part of http://github.com/gfiumara/CIEDE2000 by Gregory Fiumara.
- * See LICENSE for details.
  */
  
 #ifndef GPF_CIEDE2000_H_
 #define GPF_CIEDE2000_H_
 
-#include <ostream>
-
 #ifndef M_PI
-#define M_PI        3.14159265358979323846264338327950288   /* pi */
+#define M_PI 3.141592653589793   /* pi */
 #endif
 
-/** Namespace containing all necessary objects and methods for CIEDE2000 */
-namespace CIEDE2000
-{
-	/***********************************************************************
-	 * Types.
-	 **********************************************************************/
+/*
+ * "For these and all other numerical/graphical deltaE00 values
+ * reported in this article, we set the parametric weighting factors
+ * to unity (i.e., K_L = K_C = K_H = 1.0)." (Page 27).
+ */
 
-	/** A color in CIELAB colorspace */
-	struct LAB
-	{
-		/** Lightness */
-		double l;
-		/** Color-opponent a dimension */
-		double a;
-		/** Color-opponent b dimension */
-		double b;
-	};
-	/** Convenience definition for struct LAB */
-	using LAB = struct LAB;
+#ifndef K_L
+#define K_L 1.0
+#endif
 
-	/***********************************************************************
-	 * Operations.
-	 **********************************************************************/
+#ifndef K_C
+#define K_C 1.0
+#endif
 
-	/**
-	 * @brief
-	 * Obtain Delta-E 2000 value.
-	 * @details
-	 * Based on the paper "The CIEDE2000 Color-Difference Formula: 
-	 * Implementation Notes, Supplementary Test Data, and Mathematical 
-	 * Observations" by Gaurav Sharma, Wencheng Wu, and Edul N. Dalal,
-	 * from http://www.ece.rochester.edu/~gsharma/ciede2000/.
-	 *
-	 * @param lab1
-	 * First color in LAB colorspace.
-	 * @param lab2
-	 * Second color in LAB colorspace.
-	 *
-	 * @return
-	 * Delta-E difference between lab1 and lab2.
-	 */
-	double
-	CIEDE2000(
-	    const LAB &lab1,
-	    const LAB &lab2);
-	    
-	/***********************************************************************
-	 * Conversions.
-	 **********************************************************************/
-		
-    	/**
-    	 * @brief
-    	 * Convert degrees to radians.
-    	 *
-    	 * @param deg
-    	 * Angle in degrees.
-    	 *
-    	 * @return
-    	 * deg in radians.
-    	 */
-	constexpr double
-	deg2Rad(
-	    const double deg);
-	
-	/**
-    	 * @brief
-    	 * Convert radians to degrees.
-    	 *
-    	 * @param rad
-    	 * Angle in radians.
-    	 *
-    	 * @return
-    	 * rad in degrees.
-    	 */
-        constexpr double
-	rad2Deg(
-	    const double rad);
-}
+#ifndef K_H
+#define K_H 1.0
+#endif
 
-/*******************************************************************************
- * Conversions.
- ******************************************************************************/
+#ifndef DEG_360_IN_RAD
+#define DEG_360_IN_RAD 6.283185307179586
+#endif
+
+#ifndef DEG_180_IN_RAD
+#define DEG_180_IN_RAD 3.141592653589793
+#endif
+
+#ifndef POW_25_TO_7
+#define POW_25_TO_7 6103515625.0
+#endif
+
 
 /**
  * @brief
- * LAB output stream operator.
+ * Obtain Delta-E 2000 value.
+ * @details
+ * Based on the paper "The CIEDE2000 Color-Difference Formula:
+ * Implementation Notes, Supplementary Test Data, and Mathematical
+ * Observations" by Gaurav Sharma, Wencheng Wu, and Edul N. Dalal,
+ * from http://www.ece.rochester.edu/~gsharma/ciede2000/.
  *
- * @param s
- * Output stream.
- * @param labColor
- * Color to output.
+ * @param l1
+ * L component of the first color in LAB colorspace.
+ * @param a1
+ * a component of the first color in LAB colorspace.
+ * @param b1
+ * b component of the first color in LAB colorspace.
+ * @param la
+ * L component of the second color in LAB colorspace.
+ * @param a2
+ * a component of the second color in LAB colorspace.
+ * @param b2
+ * b component of the second color in LAB colorspace.
  *
  * @return
- * s with labColor appended.
+ * Delta-E difference between the first color and the second color.
  */
-std::ostream&
-operator<<(
-    std::ostream &s,
-    const CIEDE2000::LAB &labColor);
+double CIEDE2000(double l1, double a1, double b1, double l2, double a2, double b2);
+
+/***********************************************************************
+ * Conversions.
+ **********************************************************************/
+
+/**
+ * @brief
+ * Convert degrees to radians.
+ *
+ * @param deg
+ * Angle in degrees.
+ *
+ * @return
+ * deg in radians.
+ */
+double deg2Rad(double deg);
+
+/**
+ * @brief
+ * Convert radians to degrees.
+ *
+ * @param rad
+ * Angle in radians.
+ *
+ * @return
+ * rad in degrees.
+ */
+double rad2Deg(double rad);
     
 #endif /* GPF_CIEDE2000_H_ */
-
